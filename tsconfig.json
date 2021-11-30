@@ -19,8 +19,8 @@
     "types": ["vite/client", "node", "jest"],
     "baseUrl": ".",
     "paths": {
-      "@/*": ["src/*"]
+      "@/*": ["example/*"]
     }
   },
-  "include": ["vite.config.*", "src/**/*", "src/**/*.ts", "src/**/*.tsx"]
+  "include": ["vite.config.*", "example/**/*", "example/**/*.ts", "example/**/*.tsx"]
 }

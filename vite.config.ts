@@ -14,7 +14,7 @@ export default defineConfig({
       {
         // for import like : @/x/y/z
         find: /@\//,
-        replacement: `${path.resolve(__dirname, "src")}/`,
+        replacement: `${path.resolve(__dirname, "example")}/`,
       },
       {
         // for import like : ~x/y/z
