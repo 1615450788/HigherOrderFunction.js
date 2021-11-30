@@ -16,15 +16,22 @@
     "lint": "eslint \"src/**/*.{ts,tsx}\" --quiet"
   },
   "dependencies": {
-    "react": "^17.0.2",
-    "react-dom": "^17.0.2",
-    "vite-plugin-dts": "^0.9.6"
+    "lodash": "^4.17.21",
+    "object-hash": "^2.2.0",
+    "queue": "^6.0.2",
+    "retry": "^0.13.1"
   },
   "devDependencies": {
+    "vite-plugin-dts": "^0.9.6",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "@types/object-hash": "^2.2.1",
     "@types/jest": "^27.0.1",
+    "@types/lodash": "^4.14.177",
     "@types/node": "^16.7.1",
     "@types/react": "^17.0.0",
     "@types/react-dom": "^17.0.0",
+    "@types/retry": "^0.12.1",
     "@typescript-eslint/eslint-plugin": "^5.0.0",
     "@typescript-eslint/parser": "^5.0.0",
     "@vitejs/plugin-legacy": "^1.6.2",
