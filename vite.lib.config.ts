@@ -8,6 +8,8 @@ const dependencies = Object.keys(json.dependencies)
 const root = __dirname;
 export default defineConfig((env) => {
   return {
+    base: './',
+    envDir: './',
     plugins: [
       dts({ insertTypesEntry: true }),
     ],
