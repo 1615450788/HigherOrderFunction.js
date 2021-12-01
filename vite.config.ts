@@ -6,6 +6,8 @@ import { vitePluginCommonjs } from 'vite-plugin-commonjs'
 
 // https://vitejs.dev/config/
 export default defineConfig({
+  base: './',
+  envDir: './',
   plugins: [legacy(), reactRefresh(), vitePluginCommonjs()],
   esbuild: {
     jsxInject: `import React from 'react'`, // automatically import React in jsx files
