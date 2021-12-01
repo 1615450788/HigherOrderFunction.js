@@ -1,6 +1,5 @@
 import { clamp, inRange } from 'lodash';
-import { Queue } from '../common/queue';
-
+import Queue from '../common/queue';
 interface IOptions {
   /**
    * 队列任务并发限制

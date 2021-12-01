@@ -1,7 +1,9 @@
 var inherits = require('inherits')
 var EventEmitter = require('events').EventEmitter
+// import { EventEmitter } from 'events'
+// import inherits from 'inherits'
 
-export function Queue(options) {
+function Queue(options) {
   if (!(this instanceof Queue)) {
     return new Queue(options)
   }
@@ -18,7 +20,12 @@ export function Queue(options) {
   this.jobs = []
   this.timers = {}
 }
-inherits(Queue, EventEmitter)
+let x = inherits.default || inherits;
+x(Queue, EventEmitter)
+
+window.module && (module.exports = Queue);
+
+export default Queue
 
 var arrayMethods = [
   'pop',

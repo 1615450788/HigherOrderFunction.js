@@ -12,21 +12,8 @@ export default defineConfig({
   esbuild: {
     jsxInject: `import React from 'react'`, // automatically import React in jsx files
   },
-  resolve: {
-    alias: [
-      {
-        // for import like : @/x/y/z
-        find: /@\//,
-        replacement: `${path.resolve(__dirname, "example")}/`,
-      },
-      {
-        // for import like : ~x/y/z
-        find: /~(.*)/,
-        replacement: `${path.resolve(__dirname, "node_modules")}/$1`,
-      },
-    ],
-  },
   build: {
     outDir: path.join(__dirname, 'docs'),
+    sourcemap: 'hidden',
   }
 });

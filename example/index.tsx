@@ -22,12 +22,12 @@ function Retry() {
     fn().then((d) => setValue(d));
   }, [])
   return <div>
+    <h2>Retry</h2>
     <div>{`const fn = retryWarpper(() => {`}</div>
     <div>{`const x = Math.random();`}</div>
     <div>{`if(x > 0.9){return x}else{throw new Error()}`}</div>
     <div>{`}, { debug: true, retries: 99, factor: 1, maxTimeout: 1000 })`}</div>
     <div>{`console.log(await fn())`}</div>
-
     <div>重试次数:{count}</div>
     <div>执行结果:{value || '执行中'}</div>
   </div>
@@ -48,6 +48,7 @@ function Queue() {
     Promise.all([fn(), fn(), fn(), fn()])
   }, [])
   return <div>
+    <h2>Queue</h2>
     <div>{`const originFn = ()=> new Promise(r => setTimeout(()=>{console.log('完成一个');r()},1000))`}</div>
     <div>{`const fn = queueWarpper(originFn,{ concurrency: 1 })`}</div>
     <div>{`fn();fn();fn();fn();`}</div>
@@ -71,6 +72,7 @@ function Cache() {
     }, 1000)
   }, [])
   return <div>
+    <h2>Cache</h2>
     <div>{`const fn = cacheWarpper((a,b)=> {`}</div>
     <div>{`var x =a+b;console.log(x);return x})`}</div>
     <div>{`setInterval(() => fn(1, 2),1000)`}</div>
