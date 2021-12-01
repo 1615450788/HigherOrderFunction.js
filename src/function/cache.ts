@@ -67,11 +67,3 @@ export const cacheWarpper = (fn: Function, options?: IOptions) => {
     }
   };
 }
-
-// function mergeAsync(value: Promise<any> | any, cb: Function) {
-//   if (value.then) {
-//     return value.then(cb)
-//   } else {
-//     return cb(value)
-//   }
-// }

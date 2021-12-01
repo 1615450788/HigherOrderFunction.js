@@ -5,7 +5,7 @@ test('number param test cache', async () => {
   const fn = cacheWarpper((a) => {
     count++
     return a + a
-  }, { debug: true })
+  }, {})
   expect(await fn(1)).toBe(2);
   expect(await fn(1)).toBe(2);
   expect(count).toBe(1);
@@ -118,6 +118,43 @@ test('async function', async () => {
   expect(await fn(1)).toBe(2)
   expect(count).toBe(1);
 });
+
+
+test('multiple param test cache', async () => {
+  let count = 0
+  const fn = cacheWarpper((a, b) => {
+    count++
+    return a + b
+  })
+  expect(await fn(1, 2)).toBe(3);
+  expect(await fn(1, 2)).toBe(3);
+  expect(count).toBe(1);
+});
+
+test('complex param test cache', async () => {
+  let count = 0
+  const fn = cacheWarpper((a) => {
+    count++
+    return a.a.a + a.a.b
+  })
+  expect(await fn({ a: { a: 1, b: 2 } })).toBe(3);
+  expect(await fn({ a: { a: 1, b: 2 } })).toBe(3);
+  expect(count).toBe(1);
+});
+
+test('complex param test cache', async () => {
+  let count = 0
+  const fn = cacheWarpper((a) => {
+    count++
+    return a.cb() + a.cb();
+  })
+  const cb = () => { return count };
+  expect(await fn({ cb })).toBe(2);
+  expect(await fn({ cb })).toBe(2);
+  expect(cb()).toBe(1);
+  expect(count).toBe(1);
+});
+
 
 
 
