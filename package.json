@@ -13,7 +13,8 @@
     "test:ci": "jest",
     "typecheck": "tsc",
     "format": "prettier --write \"src/**/*.{ts,tsx,css}\" && git update-index --again",
-    "lint": "eslint \"src/**/*.{ts,tsx}\" --quiet"
+    "lint": "eslint \"src/**/*.{ts,tsx}\" --quiet",
+    "build:lib": "vite build --config vite.lib.config.ts"
   },
   "dependencies": {
     "events": "^3.3.0",

@@ -25,7 +25,7 @@ export default defineConfig((env) => {
       // assetsDir: '',
       sourcemap: env.mode === 'development' ? true : false,
       lib: {
-        entry: path.resolve(__dirname, './src/parser/index.ts'),
+        entry: path.resolve(__dirname, './src/index.ts'),
         name: 'HighOrderFunction',
         fileName: () => 'index.js',
         formats: ['es']
