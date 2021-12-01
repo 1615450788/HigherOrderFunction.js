@@ -1,21 +1,44 @@
 import retry from 'retry';
 
 /**
+ * 重试配置
+ */
+interface IOptions {
+  /**
+   * 是否开启调试日志
+   * @default false
+   */
+  debug?: boolean;
+  /**
+   * 重试次数
+   * @default 2 俗话说，事不过三
+   */
+  retries: number;
+  /**
+   * 更多需要透传给retry的配置
+   * @see https://www.npmjs.com/package/retry
+   */
+  [key: string]: any
+}
+
+
+/**
  * 重试高阶函数
  * @param cb 需要重试的函数
- * @param options 重试配置，如重试几次
- * @returns cb的执行结果，除重试全部失败，抛出错误外，均返回成功数据
+ * @param options 重试配置
+ * @returns 包装后的重试函数，只要重试成功，就不会报错
  */
-export function retryWarpper(cb: () => Promise<any>, options = { retries: 2 }) {
+export function retryWarpper(cb: (...arg: any) => Promise<any>, options?: IOptions) {
+  const { debug = false, retries = 2 } = options || {};
   var operation = retry.operation(options);
-  return new Promise((resolve, reject) => {
+  return (...arg: any[]) => new Promise((resolve, reject) => {
     operation.attempt(async () => {
       try {
         const attempts = operation.attempts();
         if (attempts > 1) {
-          console.log('任务执行失败，正在重试，当前重试次数:', attempts - 1, '; 最大重试次数：', options.retries);
+          debug && console.log('任务执行失败，正在重试，当前重试次数:', attempts - 1, '; 最大重试次数：', retries);
         }
-        const result = await cb();
+        const result = await cb(...arg);
         resolve(result);
       } catch (error) {
         if (operation.retry(error as any)) {
