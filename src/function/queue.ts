@@ -1,6 +1,6 @@
 import { clamp, inRange } from 'lodash';
-import Queue from 'queue';
-// const Queue = require('queue');
+import { Queue } from '../common/queue';
+
 interface IOptions {
   /**
    * 队列任务并发限制
@@ -38,6 +38,10 @@ interface IOptions {
 
 /**
  * 队列执行高阶函数，支持弹性并发
+ * @example 
+ * const fn = queueWarpper((a) => new Promise(r=>setTimeout(r,1000)),{concurrency:1});
+ * fn() // delay 1s
+ * fn() // delay 1s
  * @param fn 需要队列执行的函数
  * @param options 队列配置
  * @returns 包装后的队列函数，再次调用后插入队列自动执行
