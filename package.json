@@ -7,7 +7,7 @@
   },
   "scripts": {
     "dev": "vite --port 3000",
-    "build": "npm run typecheck && vite build",
+    "build": "vite build",
     "serve": "npm run build && vite preview --port 3000",
     "test": "jest --watch",
     "test:ci": "jest",
