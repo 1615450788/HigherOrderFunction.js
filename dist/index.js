@@ -228,13 +228,13 @@ const queueWarpper = (fn, options) => {
     concurrency = 6,
     failAbort = true,
     debug = false,
-    elastic: {
-      enable = false,
-      idealDuration = 1e4
-    } = {}
+    elastic: { enable = false, idealDuration = 1e4 } = {}
   } = options || {};
   const startConcurrency = enable ? 1 : concurrency;
-  const queueIns = new Queue({ concurrency: startConcurrency, autostart: true });
+  const queueIns = new Queue({
+    concurrency: startConcurrency,
+    autostart: true
+  });
   if (enable && concurrency > 1) {
     queueIns.on("start", (job) => {
       job._startTime = Number(new Date());
@@ -256,7 +256,11 @@ const queueWarpper = (fn, options) => {
       if (queueIns.concurrency !== nowConcurrency) {
         queueIns.concurrency = nowConcurrency;
       }
-      debug && console.log("queueWarpper success", { duration, start: job._startTime, nowConcurrency });
+      debug && console.log("queueWarpper success", {
+        duration,
+        start: job._startTime,
+        nowConcurrency
+      });
     });
   }
   let errorHandler = () => {

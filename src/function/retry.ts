@@ -1,9 +1,9 @@
-import retry from 'retry';
+import retry from "retry";
 
 /**
-  * 重试配置
-  * 更多需要透传给retry的配置
-  * @see https://www.npmjs.com/package/retry
+ * 重试配置
+ * 更多需要透传给retry的配置
+ * @see https://www.npmjs.com/package/retry
  */
 interface IOptions {
   /**
@@ -20,13 +20,12 @@ interface IOptions {
    * 更多需要透传给retry的配置
    * @see https://www.npmjs.com/package/retry
    */
-  [key: string]: any
+  [key: string]: any;
 }
-
 
 /**
  * 重试高阶函数
- * @example 
+ * @example
  * const fn = retryWarpper(() => {
  *  if(Math.random()>0.5){
  *    throw New Error()
@@ -42,21 +41,28 @@ interface IOptions {
 export function retryWarpper(cb: (...arg: any) => any, options?: IOptions) {
   const { debug = false, retries = 2 } = options || {};
   var operation = retry.operation({ ...options, retries });
-  return (...arg: any[]) => new Promise<any>((resolve, reject) => {
-    operation.attempt(async () => {
-      try {
-        const attempts = operation.attempts();
-        if (attempts > 1) {
-          debug && console.log('任务执行失败，正在重试，当前重试次数:', attempts - 1, '; 最大重试次数：', retries);
+  return (...arg: any[]) =>
+    new Promise<any>((resolve, reject) => {
+      operation.attempt(async () => {
+        try {
+          const attempts = operation.attempts();
+          if (attempts > 1) {
+            debug &&
+              console.log(
+                "任务执行失败，正在重试，当前重试次数:",
+                attempts - 1,
+                "; 最大重试次数：",
+                retries
+              );
+          }
+          const result = await cb(...arg);
+          resolve(result);
+        } catch (error) {
+          if (operation.retry(error as any)) {
+            return;
+          }
+          reject(operation.errors());
         }
-        const result = await cb(...arg);
-        resolve(result);
-      } catch (error) {
-        if (operation.retry(error as any)) {
-          return;
-        }
-        reject(operation.errors());
-      }
+      });
     });
-  });
 }

@@ -10,7 +10,7 @@ interface IOptions {
      */
     params?: (...arg: any[]) => any[];
     /**
-    * 定义缓存key运算的方式，默认使用object-hash运算;
+     * 定义缓存key运算的方式，默认使用object-hash运算;
      * @default (...arg) => hash(arg);
      * @param {Array} arg:调用 fn 的参数数组；
      * @returns {String} 缓存key;

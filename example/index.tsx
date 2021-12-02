@@ -1,7 +1,7 @@
 import "./index.css";
 import ReactDOM from "react-dom";
 import { useEffect, useState } from 'react';
-import { retryWarpper, queueWarpper, cacheWarpper } from '../src/index'
+import { retryWarpper, queueWarpper, cacheWarpper } from 'high-order-function'
 window.retryWarpper = retryWarpper;
 window.queueWarpper = queueWarpper;
 window.cacheWarpper = cacheWarpper;

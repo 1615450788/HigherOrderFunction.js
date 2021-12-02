@@ -1,7 +1,7 @@
 /**
-  * 重试配置
-  * 更多需要透传给retry的配置
-  * @see https://www.npmjs.com/package/retry
+ * 重试配置
+ * 更多需要透传给retry的配置
+ * @see https://www.npmjs.com/package/retry
  */
 interface IOptions {
     /**

@@ -5,16 +5,16 @@
     "name": "Jack Wang",
     "url": "https://github.com/1615450788"
   },
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
   "scripts": {
     "dev": "vite --port 3000",
     "build": "vite build",
-    "serve": "npm run build && vite preview --port 3000",
+    "dev:lib": "vite build --config vite.lib.config.ts --watch",
+    "build:lib": "vite build --config vite.lib.config.ts",
     "test": "jest --watch",
     "test:ci": "jest",
-    "typecheck": "tsc",
-    "format": "prettier --write \"src/**/*.{ts,tsx,css}\" && git update-index --again",
-    "lint": "eslint \"src/**/*.{ts,tsx}\" --quiet",
-    "build:lib": "vite build --config vite.lib.config.ts"
+    "format": "prettier --write \"src/**/*.{ts,tsx,css}\" && git update-index --again"
   },
   "dependencies": {
     "events": "^3.3.0",
