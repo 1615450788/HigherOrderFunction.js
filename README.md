@@ -1,4 +1,4 @@
-# High Order  Function
+# High Order Function
 
 Higher order function library
 
