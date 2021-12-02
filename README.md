@@ -2,6 +2,8 @@
 
 Higher order function library
 
+[demo](https://1615450788.github.io/HigherOrderFunction.js/)
+
 ```
 npm i high-order-function
 ```
