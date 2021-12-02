@@ -1,5 +1,6 @@
 import { clamp, inRange } from "lodash";
 import Queue from "../common/queue";
+
 interface IOptions {
   /**
    * 队列任务并发限制
@@ -52,7 +53,7 @@ export const queueWarpper = (fn: Function, options?: IOptions) => {
     elastic: { enable = false, idealDuration = 10000 } = {},
   } = options || {};
   const startConcurrency = enable ? 1 : concurrency;
-  const queueIns = new Queue({
+  const queueIns = new (Queue as any)({
     concurrency: startConcurrency,
     autostart: true,
   });
@@ -90,7 +91,7 @@ export const queueWarpper = (fn: Function, options?: IOptions) => {
     });
   }
 
-  let errorHandler = () => {};
+  let errorHandler = () => { };
   // 根据配置添加失败中止逻辑，（queue的error事件太过滞后，无法在任务失败之前执行）
   if (failAbort) {
     errorHandler = () => {

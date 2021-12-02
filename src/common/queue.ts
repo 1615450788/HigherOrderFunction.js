@@ -1,7 +1,10 @@
+// @ts-nocheck
 var inherits = require('inherits')
 var EventEmitter = require('events').EventEmitter
-// import { EventEmitter } from 'events'
-// import inherits from 'inherits'
+
+export default Queue
+// module.exports.default = Queue
+
 
 function Queue(options) {
   if (!(this instanceof Queue)) {
@@ -20,12 +23,7 @@ function Queue(options) {
   this.jobs = []
   this.timers = {}
 }
-let x = inherits.default || inherits;
-x(Queue, EventEmitter)
-
-window.module && (module.exports = Queue);
-
-export default Queue
+inherits(Queue, EventEmitter)
 
 var arrayMethods = [
   'pop',
