@@ -3,7 +3,7 @@ import { inRange, clamp } from 'lodash';
 import retry from 'retry';
 
 const md5 = (v, options = {}) => hash(v, { algorithm: "md5", ...options });
-const cacheWarpper = (fn, options) => {
+const Cache = (fn, options) => {
   const {
     params = (...arg) => arg,
     key = (...arg) => md5(arg, options),
@@ -27,9 +27,9 @@ const cacheWarpper = (fn, options) => {
 
 var inherits = require("inherits");
 var EventEmitter = require("events").EventEmitter;
-function Queue(options) {
-  if (!(this instanceof Queue)) {
-    return new Queue(options);
+function Queue$1(options) {
+  if (!(this instanceof Queue$1)) {
+    return new Queue$1(options);
   }
   EventEmitter.call(this);
   options = options || {};
@@ -43,7 +43,7 @@ function Queue(options) {
   this.jobs = [];
   this.timers = {};
 }
-inherits(Queue, EventEmitter);
+inherits(Queue$1, EventEmitter);
 var arrayMethods = [
   "pop",
   "shift",
@@ -51,15 +51,15 @@ var arrayMethods = [
   "lastIndexOf"
 ];
 arrayMethods.forEach(function(method) {
-  Queue.prototype[method] = function() {
+  Queue$1.prototype[method] = function() {
     return Array.prototype[method].apply(this.jobs, arguments);
   };
 });
-Queue.prototype.slice = function(begin, end) {
+Queue$1.prototype.slice = function(begin, end) {
   this.jobs = this.jobs.slice(begin, end);
   return this;
 };
-Queue.prototype.reverse = function() {
+Queue$1.prototype.reverse = function() {
   this.jobs.reverse();
   return this;
 };
@@ -69,7 +69,7 @@ var arrayAddMethods = [
   "splice"
 ];
 arrayAddMethods.forEach(function(method) {
-  Queue.prototype[method] = function() {
+  Queue$1.prototype[method] = function() {
     var methodResult = Array.prototype[method].apply(this.jobs, arguments);
     if (this.autostart) {
       this.start();
@@ -77,12 +77,12 @@ arrayAddMethods.forEach(function(method) {
     return methodResult;
   };
 });
-Object.defineProperty(Queue.prototype, "length", {
+Object.defineProperty(Queue$1.prototype, "length", {
   get: function() {
     return this.pending + this.jobs.length;
   }
 });
-Queue.prototype.start = function(cb) {
+Queue$1.prototype.start = function(cb) {
   if (cb) {
     callOnErrorOrEnd.call(this, cb);
   }
@@ -158,10 +158,10 @@ Queue.prototype.start = function(cb) {
     this.start();
   }
 };
-Queue.prototype.stop = function() {
+Queue$1.prototype.stop = function() {
   this.running = false;
 };
-Queue.prototype.end = function(err) {
+Queue$1.prototype.end = function(err) {
   clearTimers.call(this);
   this.jobs.length = 0;
   this.pending = 0;
@@ -193,7 +193,7 @@ function done(err) {
   this.emit("end", err);
 }
 
-const queueWarpper = (fn, options) => {
+const Queue = (fn, options) => {
   const {
     concurrency = 6,
     failAbort = true,
@@ -201,7 +201,7 @@ const queueWarpper = (fn, options) => {
     elastic: { enable = false, idealDuration = 1e4 } = {}
   } = options || {};
   const startConcurrency = enable ? 1 : concurrency;
-  const queueIns = new Queue({
+  const queueIns = new Queue$1({
     concurrency: startConcurrency,
     autostart: true
   });
@@ -226,7 +226,7 @@ const queueWarpper = (fn, options) => {
       if (queueIns.concurrency !== nowConcurrency) {
         queueIns.concurrency = nowConcurrency;
       }
-      debug && console.log("queueWarpper success", {
+      debug && console.log("Queue success", {
         duration,
         start: job._startTime,
         nowConcurrency
@@ -237,7 +237,7 @@ const queueWarpper = (fn, options) => {
   };
   if (failAbort) {
     errorHandler = () => {
-      debug && console.log("queueWarpper error", queueIns);
+      debug && console.log("Queue error", queueIns);
       queueIns.end();
     };
   }
@@ -257,7 +257,7 @@ const queueWarpper = (fn, options) => {
   };
 };
 
-function retryWarpper(cb, options) {
+function Retry(cb, options) {
   const { debug = false, retries = 2 } = options || {};
   var operation = retry.operation({ ...options, retries });
   return (...arg) => new Promise((resolve, reject) => {
@@ -279,4 +279,12 @@ function retryWarpper(cb, options) {
   });
 }
 
-export { cacheWarpper, queueWarpper, retryWarpper };
+var HOF = /*#__PURE__*/Object.freeze({
+  __proto__: null,
+  [Symbol.toStringTag]: 'Module',
+  Cache: Cache,
+  Queue: Queue,
+  Retry: Retry
+});
+
+export { Cache, Queue, Retry, HOF as default };

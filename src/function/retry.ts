@@ -26,7 +26,7 @@ interface IOptions {
 /**
  * 重试高阶函数
  * @example
- * const fn = retryWarpper(() => {
+ * const fn = Retry(() => {
  *  if(Math.random()>0.5){
  *    throw New Error()
  *  }else{
@@ -38,7 +38,7 @@ interface IOptions {
  * @param options 重试配置
  * @returns 包装后的重试函数，只要重试成功，就不会报错
  */
-export function retryWarpper(cb: (...arg: any) => any, options?: IOptions) {
+export function Retry(cb: (...arg: any) => any, options?: IOptions) {
   const { debug = false, retries = 2 } = options || {};
   var operation = retry.operation({ ...options, retries });
   return (...arg: any[]) =>

@@ -1,5 +1,5 @@
 import { clamp, inRange } from "lodash";
-import Queue from "../common/queue";
+import originQueue from "../common/queue";
 
 interface IOptions {
   /**
@@ -38,14 +38,14 @@ interface IOptions {
 /**
  * 队列执行高阶函数，支持弹性并发
  * @example
- * const fn = queueWarpper((a) => new Promise(r=>setTimeout(r,1000)),{concurrency:1});
+ * const fn = Queue((a) => new Promise(r=>setTimeout(r,1000)),{concurrency:1});
  * fn() // delay 1s
  * fn() // delay 1s
  * @param fn 需要队列执行的函数
  * @param options 队列配置
  * @returns 包装后的队列函数，再次调用后插入队列自动执行
  */
-export const queueWarpper = (fn: Function, options?: IOptions) => {
+export const Queue = (fn: Function, options?: IOptions) => {
   const {
     concurrency = 6,
     failAbort = true,
@@ -53,7 +53,7 @@ export const queueWarpper = (fn: Function, options?: IOptions) => {
     elastic: { enable = false, idealDuration = 10000 } = {},
   } = options || {};
   const startConcurrency = enable ? 1 : concurrency;
-  const queueIns = new (Queue as any)({
+  const queueIns = new (originQueue as any)({
     concurrency: startConcurrency,
     autostart: true,
   });
@@ -83,7 +83,7 @@ export const queueWarpper = (fn: Function, options?: IOptions) => {
         queueIns.concurrency = nowConcurrency;
       }
       debug &&
-        console.log("queueWarpper success", {
+        console.log("Queue success", {
           duration,
           start: job._startTime,
           nowConcurrency,
@@ -95,7 +95,7 @@ export const queueWarpper = (fn: Function, options?: IOptions) => {
   // 根据配置添加失败中止逻辑，（queue的error事件太过滞后，无法在任务失败之前执行）
   if (failAbort) {
     errorHandler = () => {
-      debug && console.log("queueWarpper error", queueIns);
+      debug && console.log("Queue error", queueIns);
       queueIns.end();
     };
   }

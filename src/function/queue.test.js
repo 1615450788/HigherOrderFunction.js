@@ -1,7 +1,7 @@
-const { queueWarpper } = require('./queue');
+const { Queue } = require('./queue');
 
 test('concurrency', async () => {
-  const fn = queueWarpper(() => {
+  const fn = Queue(() => {
     return new Promise(r => setTimeout(() => r(+new Date()), 100));
   }, { concurrency: 1 })
 
@@ -12,7 +12,7 @@ test('concurrency', async () => {
 
 test('failAbort', async () => {
   let count = 0
-  const fn = queueWarpper(async () => {
+  const fn = Queue(async () => {
     count++
     throw new Error()
   }, { failAbort: true, concurrency: 1 })
@@ -22,7 +22,7 @@ test('failAbort', async () => {
 });
 
 test('elastic', async () => {
-  const fn = queueWarpper((a) => {
+  const fn = Queue((a) => {
     return new Promise(r => setTimeout(() => r(+new Date()), a ? 40 : 10));
   }, { concurrency: 2, elastic: { enable: true, idealDuration: 20 } })
 

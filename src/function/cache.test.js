@@ -1,8 +1,8 @@
-const { cacheWarpper } = require('./cache');
+const { Cache } = require('./cache');
 
 test('number param test cache', async () => {
   let count = 0
-  const fn = cacheWarpper((a) => {
+  const fn = Cache((a) => {
     count++
     return a + a
   }, {})
@@ -13,7 +13,7 @@ test('number param test cache', async () => {
 
 test('boolean param test cache', async () => {
   let count = 0
-  const fn = cacheWarpper((a) => {
+  const fn = Cache((a) => {
     count++
     return !a
   })
@@ -24,7 +24,7 @@ test('boolean param test cache', async () => {
 
 test('string param test cache', async () => {
   let count = 0
-  const fn = cacheWarpper((a) => {
+  const fn = Cache((a) => {
     count++
     return a + a
   })
@@ -35,7 +35,7 @@ test('string param test cache', async () => {
 
 test('object param test cache', async () => {
   let count = 0
-  const fn = cacheWarpper((a) => {
+  const fn = Cache((a) => {
     count++
     return a.a + a.a
   })
@@ -46,7 +46,7 @@ test('object param test cache', async () => {
 
 test('array param test cache', async () => {
   let count = 0
-  const fn = cacheWarpper((a) => {
+  const fn = Cache((a) => {
     count++
     return a[0] + a[0]
   })
@@ -57,7 +57,7 @@ test('array param test cache', async () => {
 
 test('function param test cache', async () => {
   let count = 0
-  const fn = cacheWarpper((f) => {
+  const fn = Cache((f) => {
     count++
     return f(1)
   })
@@ -68,7 +68,7 @@ test('function param test cache', async () => {
 
 test('map param test cache', async () => {
   let count = 0
-  const fn = cacheWarpper((map) => {
+  const fn = Cache((map) => {
     count++
     return map.get('a') + map.get('a');
   })
@@ -81,7 +81,7 @@ test('map param test cache', async () => {
 
 test('set param test cache', async () => {
   let count = 0
-  const fn = cacheWarpper((set) => {
+  const fn = Cache((set) => {
     count++
     return set.size + set.size
   })
@@ -96,7 +96,7 @@ test('set param test cache', async () => {
 
 test('buffer param test cache', async () => {
   let count = 0
-  const fn = cacheWarpper((set) => {
+  const fn = Cache((set) => {
     count++
     return set.length + set.length
   })
@@ -109,7 +109,7 @@ test('buffer param test cache', async () => {
 
 test('async function', async () => {
   let count = 0
-  const fn = cacheWarpper(async (a) => {
+  const fn = Cache(async (a) => {
     count++
     return new Promise(resolve => setTimeout(() => resolve(a + a)))
   })
@@ -122,7 +122,7 @@ test('async function', async () => {
 
 test('multiple param test cache', async () => {
   let count = 0
-  const fn = cacheWarpper((a, b) => {
+  const fn = Cache((a, b) => {
     count++
     return a + b
   })
@@ -133,7 +133,7 @@ test('multiple param test cache', async () => {
 
 test('complex param test cache', async () => {
   let count = 0
-  const fn = cacheWarpper((a) => {
+  const fn = Cache((a) => {
     count++
     return a.a.a + a.a.b
   })
@@ -144,7 +144,7 @@ test('complex param test cache', async () => {
 
 test('complex param test cache', async () => {
   let count = 0
-  const fn = cacheWarpper((a) => {
+  const fn = Cache((a) => {
     count++
     return a.cb() + a.cb();
   })

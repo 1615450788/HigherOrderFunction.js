@@ -44,13 +44,13 @@ interface IOptions {
  * 复杂类型入参将会用属性或值进行hash运算，如function、map、set、buffer、array、object；
  * 散列类型数据会排序后再进行hash计算，如map、object
  * @example
- * const fn = cacheWarpper((a) => a + a);
+ * const fn = Cache((a) => a + a);
  * (await fn(1)) === 2;
  * @param {Async Function} fn 需要使用缓存的函数
  * @param {Object} options 缓存配置
  * @returns
  */
-export const cacheWarpper = (fn: Function, options?: IOptions) => {
+export const Cache = (fn: Function, options?: IOptions) => {
   const {
     params = (...arg: any[]) => arg,
     key = (...arg: any[]) => md5(arg, options),
