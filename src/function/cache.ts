@@ -12,7 +12,7 @@ interface IOptions {
    * @param {Array} arg:调用 fn 的参数数组；
    * @returns {any} 进行缓存key运算的数据;
    */
-  params?: (...arg: any[]) => any[];
+  params?: (...arg: any[]) => any;
   /**
    * 定义缓存key运算的方式，默认使用object-hash运算，优先级高于hashOptions；
    * @default (...arg) => hash(arg, hashOptions);
@@ -40,9 +40,10 @@ interface IOptions {
 }
 
 /**
- * 缓存高阶函数，默认使用入参hash值作为缓存key，可通过options配置自定义，
+ * 缓存高阶函数，默认使用入参hash值作为缓存key，可通过options配置自定义；
  * 复杂类型入参将会用属性或值进行hash运算，如function、map、set、buffer、array、object；
- * 散列类型数据会排序后再进行hash计算，如map、object
+ * 散列类型数据会排序后再进行hash计算，如map、object；
+ * @throws 暂不支持Blob类型入参的hash运算，请通过options.params转换为可其他类型
  * @example
  * const fn = Cache((a) => a + a);
  * (await fn(1)) === 2;
@@ -53,7 +54,7 @@ interface IOptions {
 export const Cache = (fn: Function, options?: IOptions) => {
   const {
     params = (...arg: any[]) => arg,
-    key = (...arg: any[]) => md5(arg, options?.hash||{}),
+    key = (...arg: any[]) => md5(arg, options?.hashOptions||{}),
     storage = new Map(),
     debug = false,
   } = options || {};

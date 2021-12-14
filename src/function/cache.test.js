@@ -94,6 +94,22 @@ test('set param test cache', async () => {
   expect(count).toBe(1);
 });
 
+
+// TODO： jest没有浏览器环境，无法测试Blob类型
+// test('blob param test cache', async () => {
+//   let count = 0
+//   const fn = Cache((set) => {
+//     count++
+//     return set.length + set.length
+//   })
+//   const s = new Blob([1]);
+//   console.log('-------s', s.arrayBuffer);
+//   const s2 = new Blob([1]);
+//   expect(await fn(s)).toBe(2);
+//   expect(await fn(s2)).toBe(2);
+//   expect(count).toBe(1);
+// });
+
 test('buffer param test cache', async () => {
   let count = 0
   const fn = Cache((set) => {

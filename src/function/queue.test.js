@@ -1,5 +1,16 @@
 const { Queue } = require('./queue');
 
+test('result', async () => {
+  const fn = Queue((x) => {
+    return new Promise(r => setTimeout(() => r(x), 100));
+  }, { concurrency: 1 })
+  let name = 1;
+  expect(await fn(name)).toBeGreaterThanOrEqual(name);
+  name++
+  expect(await fn(name)).toBeGreaterThanOrEqual(name);
+
+});
+
 test('concurrency', async () => {
   const fn = Queue(() => {
     return new Promise(r => setTimeout(() => r(+new Date()), 100));
@@ -12,13 +23,18 @@ test('concurrency', async () => {
 
 test('failAbort', async () => {
   let count = 0
-  const fn = Queue(async () => {
+  const fn = Queue(async (err) => {
+    if (err) {
+      throw new Error()
+    }
     count++
-    throw new Error()
+    return new Promise(r => r(err))
   }, { failAbort: true, concurrency: 1 })
 
-  await Promise.all([fn(), fn()]).catch(e => e)
+  await Promise.all([fn(0), fn(1)]).catch(e => e)
   expect(count).toBe(1);
+  expect(await fn(0)).toBe(0);
+  expect(count).toBe(2);
 });
 
 test('elastic', async () => {
