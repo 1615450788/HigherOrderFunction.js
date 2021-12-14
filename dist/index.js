@@ -6,7 +6,7 @@ const md5 = (v, options = {}) => hash(v, { algorithm: "md5", ...options });
 const Cache = (fn, options) => {
   const {
     params = (...arg) => arg,
-    key = (...arg) => md5(arg, options),
+    key = (...arg) => md5(arg, options?.hash || {}),
     storage = new Map(),
     debug = false
   } = options || {};

@@ -10,8 +10,8 @@ interface IOptions {
      */
     params?: (...arg: any[]) => any[];
     /**
-     * 定义缓存key运算的方式，默认使用object-hash运算;
-     * @default (...arg) => hash(arg);
+     * 定义缓存key运算的方式，默认使用object-hash运算，优先级高于hashOptions；
+     * @default (...arg) => hash(arg, hashOptions);
      * @param {Array} arg:调用 fn 的参数数组；
      * @returns {String} 缓存key;
      */
@@ -32,7 +32,7 @@ interface IOptions {
      * 需要透传给object-hash的配置，用于精确控制hash的生成，例如数组和散列是否排序后计算hash
      * @see https://www.npmjs.com/package/object-hash/v/2.2.0
      */
-    [key: string]: any;
+    hashOptions?: Object;
 }
 /**
  * 缓存高阶函数，默认使用入参hash值作为缓存key，可通过options配置自定义，
