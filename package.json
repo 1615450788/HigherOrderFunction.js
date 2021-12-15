@@ -15,7 +15,7 @@
     "test": "jest --watch",
     "test:ci": "jest",
     "format": "prettier --write \"src/**/*.{ts,tsx,css}\" && git update-index --again",
-    "xxx": "npm run test:ci &&npm run build:lib && git add . && git commit -m '构建文件提交' && npm version patch -m "
+    "xxx": "npm run test:ci &&npm run build:lib && git add . && git commit -m '构建文件提交' && npm version patch -m '发布新版本'"
   },
   "dependencies": {
     "events": "^3.3.0",
