@@ -1,7 +1,5 @@
-import hash from "object-hash";
-
-const md5 = (v: any, options: any = {}) =>
-  hash(v, { algorithm: "md5", ...options });
+import { isArray, isBuffer, isFunction, isObject, isString } from 'lodash';
+import md5 from 'md5';
 /**
  * 缓存配置
  */
@@ -14,7 +12,7 @@ interface IOptions {
    */
   params?: (...arg: any[]) => any;
   /**
-   * 定义缓存key运算的方式，默认使用object-hash运算，优先级高于hashOptions；
+   * 定义缓存key运算的方式，默认使用md5运算；
    * @default (...arg) => hash(arg, hashOptions);
    * @param {Array} arg:调用 fn 的参数数组；
    * @returns {String} 缓存key;
@@ -32,18 +30,11 @@ interface IOptions {
    * @default false
    */
   debug?: boolean;
-  /**
-   * 需要透传给object-hash的配置，用于精确控制hash的生成，例如数组和散列是否排序后计算hash
-   * @see https://www.npmjs.com/package/object-hash/v/2.2.0
-   */
-  hashOptions?: Object;
 }
 
 /**
- * 缓存高阶函数，默认使用入参hash值作为缓存key，可通过options配置自定义；
+ * 缓存高阶函数，默认使用入参hash值作为缓存key
  * 复杂类型入参将会用属性或值进行hash运算，如function、map、set、buffer、array、object；
- * 散列类型数据会排序后再进行hash计算，如map、object；
- * @throws 暂不支持Blob类型入参的hash运算，请通过options.params转换为可其他类型
  * @example
  * const fn = Cache((a) => a + a);
  * (await fn(1)) === 2;
@@ -54,7 +45,7 @@ interface IOptions {
 export const Cache = (fn: Function, options?: IOptions) => {
   const {
     params = (...arg: any[]) => arg,
-    key = (...arg: any[]) => md5(arg, options?.hashOptions||{}),
+    key = (...arg: any[]) => newMD5(...arg),
     storage = new Map(),
     debug = false,
   } = options || {};
@@ -72,3 +63,20 @@ export const Cache = (fn: Function, options?: IOptions) => {
     }
   };
 };
+
+async function newMD5(...arg){
+  const argHash = await Promise.all(
+    arg.map(async (v) => {
+      if (isBuffer(v) || isArray(v) || isString(v)) {
+        return md5(v);
+      } else if (v.arrayBuffer) {
+        return md5(Buffer.from(await v.arrayBuffer()));
+      } else if (isFunction(v)) {
+        return md5(v.toString());
+      } else if (isObject(v)) {
+        return md5(JSON.stringify(v));
+      }
+    }),
+  );
+  return md5(argHash);
+}

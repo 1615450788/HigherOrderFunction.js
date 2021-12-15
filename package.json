@@ -1,6 +1,6 @@
 {
   "name": "high-order-function",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "author": {
     "name": "Jack Wang",
     "url": "https://github.com/1615450788"
@@ -14,13 +14,14 @@
     "build:lib": "vite build --config vite.lib.config.ts",
     "test": "jest --watch",
     "test:ci": "jest",
-    "format": "prettier --write \"src/**/*.{ts,tsx,css}\" && git update-index --again"
+    "format": "prettier --write \"src/**/*.{ts,tsx,css}\" && git update-index --again",
+    "xxx": "test:ci && build:lib && npm version patch -m '[patch]' "
   },
   "dependencies": {
     "events": "^3.3.0",
     "inherits": "^2.0.4",
     "lodash": "^4.17.21",
-    "object-hash": "^2.2.0",
+    "md5": "^2.3.0",
     "retry": "^0.13.1"
   },
   "devDependencies": {
