@@ -1,12 +1,11 @@
-import hash from 'object-hash';
-import { inRange, clamp } from 'lodash';
+import { isBuffer, isArray, isString, isFunction, isObject, inRange, clamp } from 'lodash';
+import md5 from 'md5';
 import retry from 'retry';
 
-const md5 = (v, options = {}) => hash(v, { algorithm: "md5", ...options });
 const Cache = (fn, options) => {
   const {
     params = (...arg) => arg,
-    key = (...arg) => md5(arg, options?.hashOptions || {}),
+    key = (...arg) => newMD5(...arg),
     storage = new Map(),
     debug = false
   } = options || {};
@@ -24,6 +23,20 @@ const Cache = (fn, options) => {
     }
   };
 };
+async function newMD5(...arg) {
+  const argHash = await Promise.all(arg.map(async (v) => {
+    if (isBuffer(v) || isArray(v) || isString(v)) {
+      return md5(v);
+    } else if (v.arrayBuffer) {
+      return md5(Buffer.from(await v.arrayBuffer()));
+    } else if (isFunction(v)) {
+      return md5(v.toString());
+    } else if (isObject(v)) {
+      return md5(JSON.stringify(v));
+    }
+  }));
+  return md5(argHash);
+}
 
 var inherits = require("inherits");
 var EventEmitter = require("events").EventEmitter;

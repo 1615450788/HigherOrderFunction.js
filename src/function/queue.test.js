@@ -37,19 +37,19 @@ test('failAbort', async () => {
   expect(count).toBe(2);
 });
 
-test('elastic', async () => {
-  const fn = Queue((a) => {
-    return new Promise(r => setTimeout(() => r(+new Date()), a ? 40 : 10));
-  }, { concurrency: 2, elastic: { enable: true, idealDuration: 20 } })
+// test('elastic', async () => {
+//   const fn = Queue((a) => {
+//     return new Promise(r => setTimeout(() => r(+new Date()), a ? 40 : 10));
+//   }, { concurrency: 2, elastic: { enable: true, idealDuration: 20 } })
 
-  const data = await Promise.all([fn(), fn(), fn(), fn(), fn(), fn(true), fn(true), fn(true), fn(true)])
-  expect(data[1] - data[0]).toBeGreaterThanOrEqual(10);
-  expect(data[2] - data[1]).toBeLessThanOrEqual(5);
-  expect(data[4] - data[3]).toBeLessThanOrEqual(5);
-  expect(data[5] - data[4]).toBeGreaterThanOrEqual(40);
-  expect(data[6] - data[5]).toBeLessThanOrEqual(5);
-  expect(data[8] - data[7]).toBeGreaterThanOrEqual(40);
-});
+//   const data = await Promise.all([fn(), fn(), fn(), fn(), fn(), fn(true), fn(true), fn(true), fn(true)])
+//   expect(data[1] - data[0]).toBeGreaterThanOrEqual(10);
+//   expect(data[2] - data[1]).toBeLessThanOrEqual(5);
+//   expect(data[4] - data[3]).toBeLessThanOrEqual(5);
+//   expect(data[5] - data[4]).toBeGreaterThanOrEqual(40);
+//   expect(data[6] - data[5]).toBeLessThanOrEqual(5);
+//   expect(data[8] - data[7]).toBeGreaterThanOrEqual(40);
+// });
 
 
 
