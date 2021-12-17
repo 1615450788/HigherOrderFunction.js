@@ -13,12 +13,12 @@ const Cache = (fn, options) => {
     const cacheKey = await key(...await params(...arg));
     const cacheValue = await storage.get(cacheKey);
     if (cacheValue) {
-      debug && console.log("Cache found", { cacheKey, cacheValue });
+      debug && console.log("Cache found", { arg, cacheKey, cacheValue });
       return cacheValue;
     } else {
-      debug && console.log("Cache not found", { cacheKey });
       const result = await fn(...arg);
       await storage.set(cacheKey, result);
+      debug && console.log("Cache not found", { arg, cacheKey, result });
       return result;
     }
   };
@@ -35,7 +35,7 @@ async function newMD5(...arg) {
       return md5(JSON.stringify(v));
     }
   }));
-  return md5(argHash);
+  return argHash.join("-");
 }
 
 var inherits = require("inherits");
